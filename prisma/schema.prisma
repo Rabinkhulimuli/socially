@@ -12,3 +12,36 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+model User {
+  id String @id @default(cuid())
+  email String @unique
+  username String @unique
+  clerkId String @unique
+  name String?
+  bio String?
+  image String?
+  location String?
+  website String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // Relations
+  posts Post[] //one-to-many
+  likes Like[] //one-to-many
+  followers Follows[] @relation("following") //user follow lists
+  following Follows[] @relation("follower") //user following list
+  notifications Notification[] @relation("userNotifications") //notification received by a user
+  notificationsCreated Notification[] @relation("notificationCreator") //notification triggered by a user
+}
+model Post {
+  id String @id @default(cuid())
+  authorId String
+  content String?
+  image String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  //Relation
+  author User @relation(fields:[authorId],references:[id],onDelete:Cascade) //cascade delete means delete all posts if author is deleted
+  comments Comment[]
+  likes Like[]
+  notifications Notification[]
+}
