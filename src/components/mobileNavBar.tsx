@@ -26,7 +26,7 @@ function MobileNavBar() {
   const { theme, setTheme } = useTheme();
   console.log(theme);
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center space-x-2 md:hidden ">
       <Button
         variant="ghost"
         size="icon"
